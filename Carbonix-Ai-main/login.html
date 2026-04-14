@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbonix AI — Sign In</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-body">
+    <div class="theme-toggle-container">
+        <button id="theme-toggle" class="btn-icon" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+    
+    <div class="login-split-container">
+        <!-- Left Side: Brand/Promo -->
+        <div class="login-promo">
+            <div class="promo-content">
+                <div class="brand-logo">
+                    <img src="img/logo.png.png" alt="Carbonix AI" class="brand-logo-img">
+                    <span>Carbonix AI</span>
+                </div>
+                
+                <h1 class="promo-heading">Track.<br>Analyse.<br>Reduce.</h1>
+                
+                <p class="promo-text">Your intelligent sustainability assistant. Measure your personal carbon footprint, discover insights powered by AI, and take action toward a greener future.</p>
+                
+                <div class="promo-stats">
+                    <div class="stat-item">
+                        <h3>2.4M</h3>
+                        <p>CO₂ KG SAVED</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>12K+</h3>
+                        <p>ACTIVE USERS</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>30%</h3>
+                        <p>AVG REDUCTION</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Decorative Circles for background -->
+            <div class="promo-circle circle-1"></div>
+            <div class="promo-circle circle-2"></div>
+        </div>
+
+        <!-- Right Side: Auth Form -->
+        <div class="login-form-area">
+            <div class="login-form-wrapper drop-in">
+                <div class="login-header text-left">
+                    <h1>Welcome back 👋</h1>
+                    <p>Sign in to your <strong style="color:var(--primary-color)">Carbonix AI</strong> dashboard</p>
+                </div>
+                
+                <div class="auth-tabs">
+                    <button type="button" class="tab-btn active" id="tab-login">Sign In</button>
+                    <button type="button" class="tab-btn" id="tab-signup">Create Account</button>
+                </div>
+
+                <form id="login-form">
+                    <div id="auth-error" class="error-msg hidden"></div>
+                    
+                    <div class="input-group signup-only hidden" id="name-group">
+                        <label for="fullname">Full name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="fullname" placeholder="John Doe">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email address</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" required placeholder="name@company.com">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" required placeholder="••••••••">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block margin-top-sm" id="login-btn">
+                        <span>Sign In</span>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-block hidden margin-top-sm" id="signup-btn">
+                        <span>Create Account</span>
+                    </button>
+                    
+                    <div class="divider">
+                        <span>or continue with</span>
+                    </div>
+                    
+                    <button type="button" id="google-login" class="btn btn-outline btn-block">
+                        <i class="fab fa-google google-icon"></i>
+                        Continue with Google
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/firebase.js"></script>
+    <script type="module" src="js/theme.js"></script>
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbonix AI — Measure · Predict · Optimize</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-body">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="img/logo.png.png" alt="Carbonix AI" class="sidebar-logo">
+            <h2>Carbonix AI</h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-category">Main</div>
+            <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </a>
+            <a href="#add-data" class="nav-item" data-section="add-data">
+                <i class="fas fa-plus-circle"></i> Add Data
+            </a>
+            <a href="#predictions" class="nav-item" data-section="predictions">
+                <i class="fas fa-chart-line"></i> Predictions
+            </a>
+            
+            <div class="nav-category">Tools</div>
+            <a href="#suggestions" class="nav-item" data-section="suggestions">
+                <i class="fas fa-lightbulb"></i> Suggestions
+            </a>
+            <a href="#" class="nav-item" onclick="document.getElementById('chatbot-toggle').click()">
+                <i class="fas fa-robot"></i> Chat Assistant
+            </a>
+            
+            <div class="nav-category">Account</div>
+            <button id="theme-toggle" class="nav-item" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i> <span>Theme</span>
+            </button>
+            <button id="logout-btn" class="nav-item logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </nav>
+        
+        <div class="sidebar-user-block">
+            <div class="user-avatar-small" id="sidebar-avatar-initial">U</div>
+            <div class="user-info-mini">
+                <h4 id="sidebar-user-name">User</h4>
+                <p id="sidebar-user-email">Loading...</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-title-group">
+                <button id="mobile-menu-btn" class="btn-icon mobile-menu-btn" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+                <h1 id="page-title">Dashboard</h1>
+            </div>
+            <!-- Removed topbar user profile as it's now in the sidebar -->
+        </header>
+        
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+        <!-- Sections Container -->
+        <div class="sections-container">
+            
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="cards-grid">
+                    <div class="card stat-card primary-gradient">
+                        <div class="stat-icon"><i class="fas fa-globe"></i></div>
+                        <div class="stat-content">
+                            <h3>Total Emissions (Month)</h3>
+                            <h2 id="total-emissions">0 <span class="unit">kg CO₂</span></h2>
+                            <p class="trend positive"><i class="fas fa-arrow-down"></i> <span id="stat-goal-preview">Goal tracking...</span></p>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon text-yellow"><i class="fas fa-bolt"></i></div>
+                        <div class="stat-content">
+                            <h3>Electricity</h3>
+                            <h2 id="elec-emissions">0 <span class="unit">kg</span></h2>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon text-blue"><i class="fas fa-car"></i></div>
+                        <div class="stat-content">
+                            <h3>Travel</h3>
+                            <h2 id="travel-emissions">0 <span class="unit">kg</span></h2>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-icon text-green"><i class="fas fa-utensils"></i></div>
+                        <div class="stat-content">
+                            <h3>Food</h3>
+                            <h2 id="food-emissions">0 <span class="unit">kg</span></h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goal Bar -->
+                <div class="card goal-card margin-top">
+                    <div class="goal-header">
+                        <div class="goal-title-row">
+                            <h3>My Reduction Goal</h3>
+                            <span id="goal-status-badge" class="badge">In Progress</span>
+                        </div>
+                        <div class="goal-setter">
+                            <span class="goal-setter-label">Target:</span>
+                            <div class="goal-input-group">
+                                <input type="number" id="goal-target-input" min="1" max="100" placeholder="e.g. 250" title="Set your monthly CO₂ target in kg">
+                                <span class="goal-unit-label">kg CO₂/mo</span>
+                            </div>
+                            <span class="goal-or">or</span>
+                            <div class="goal-input-group">
+                                <input type="number" id="goal-pct-input" min="1" max="90" placeholder="e.g. 20" title="Set a % reduction from your baseline">
+                                <span class="goal-unit-label">% reduction</span>
+                            </div>
+                            <button id="save-goal-btn" class="btn btn-sm btn-primary">
+                                <i class="fas fa-check"></i> Set Goal
+                            </button>
+                        </div>
+                    </div>
+                    <div class="goal-progress-info">
+                        <span id="goal-progress-text" class="text-muted text-sm"></span>
+                        <span id="goal-target-display" class="goal-target-pill"></span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="goal-progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="charts-grid margin-top">
+                    <div class="card chart-card">
+                        <h3>Emission Sources</h3>
+                        <div class="chart-container">
+                            <canvas id="sourcePieChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card chart-card">
+                        <h3>Monthly Trend <span id="trend-label"></span></h3>
+                        <div class="chart-container">
+                            <canvas id="trendLineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Add Data Section -->
+            <section id="add-data" class="content-section" style="display:none;">
+                <div class="card">
+                    <h2>Record Monthly Data</h2>
+                    <p class="subtitle">Enter your consumption to calculate your carbon footprint.</p>
+                    
+                    <form id="data-entry-form" class="data-form form-grid">
+                        <div class="input-group">
+                            <label for="electricity">Electricity Usage (kWh)</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-bolt"></i>
+                                <input type="number" id="electricity" min="0" step="0.1" required>
+                                <button type="button" class="btn-icon small tool-btn" id="sim-ocr-btn" title="Simulate Bill Upload"><i class="fas fa-file-invoice"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="travel">Travel Distance (km)</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-car"></i>
+                                <input type="number" id="travel" min="0" step="0.1" required>
+                                <button type="button" class="btn-icon small tool-btn" id="sim-travel-btn" title="Estimate Transport"><i class="fas fa-map-marker-alt"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="food">Diet Type</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-utensils"></i>
+                                <select id="food" required>
+                                    <option value="" disabled selected>Select diet</option>
+                                    <option value="vegetarian">Vegetarian (20kg est.)</option>
+                                    <option value="mixed">Mixed (40kg est.)</option>
+                                    <option value="meat">Heavy Meat (70kg est.)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions" style="grid-column: 1 / -1;">
+                            <button type="submit" class="btn btn-primary">Save & Calculate</button>
+                            <div id="save-status" class="text-success hidden margin-top-sm">Data saved successfully!</div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Simulators -->
+                <div id="ocr-simulation" class="card margin-top hidden drop-in">
+                    <h3>Simulate Bill Upload (OCR)</h3>
+                    <p class="text-sm">Click below to simulate extracting kWh from an electric bill image.</p>
+                    <div class="upload-zone" id="upload-zone">
+                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                        <p>Simulate Bill Upload</p>
+                    </div>
+                </div>
+
+                <div id="travel-simulation" class="card margin-top hidden drop-in">
+                    <h3>Estimate Travel by City</h3>
+                    <p class="text-sm">Select your city area to auto-populate average travel distance.</p>
+                    <div class="input-group">
+                        <select id="user-city">
+                            <option value="London">London (Avg 300km)</option>
+                            <option value="NewYork">New York (Avg 450km)</option>
+                            <option value="Tokyo">Tokyo (Avg 200km)</option>
+                            <option value="Rural">Rural Area (Avg 800km)</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline margin-top-sm" id="apply-travel">Apply Estimate</button>
+                </div>
+            </section>
+
+            <!-- Predictions Section -->
+            <section id="predictions" class="content-section" style="display:none;">
+                <div class="card">
+                    <h2>Next Month Prediction</h2>
+                    <p class="subtitle">Simulate how lifestyle changes affect your footprint in the upcoming month.</p>
+                    
+                    <div class="prediction-grid">
+                        <div class="prediction-controls">
+                            <div class="slider-group">
+                                <label for="reduce-elec">Reduce Electricity (%) <span id="elec-val">0%</span></label>
+                                <input type="range" id="reduce-elec" min="0" max="100" value="0">
+                            </div>
+                            <div class="slider-group">
+                                <label for="reduce-travel">Reduce Travel (%) <span id="travel-val">0%</span></label>
+                                <input type="range" id="reduce-travel" min="0" max="100" value="0">
+                            </div>
+                            
+                            <div class="prediction-result margin-top">
+                                <h4>Predicted CO₂: <span id="predicted-total" class="text-primary">0 kg</span></h4>
+                                <span id="trend-note"></span>
+                                <p class="text-sm text-muted">Trend-aware forecast based on your history.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="prediction-chart-container">
+                            <canvas id="predictionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Suggestions Section -->
+            <section id="suggestions" class="content-section" style="display:none;">
+                <div class="card">
+                    <h2>AI Suggestions</h2>
+                    <p class="subtitle">Personalized recommendations based on your highest emission category.</p>
+                    
+                    <div class="suggestions-container" id="suggestions-list">
+                        <!-- Populated dynamically by JS -->
+                        <div class="empty-state">
+                            <i class="fas fa-magic fa-3x text-muted"></i>
+                            <p>Loading suggestions...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- AI Chatbot Widget -->
+    <div class="chatbot-widget">
+        <button id="chatbot-toggle" class="btn btn-primary chatbot-fab shadow-glow text-white">
+            <i class="fas fa-robot"></i>
+        </button>
+        <div class="chatbot-window hidden drop-in" id="chatbot-window">
+            <div class="chatbot-header">
+                <div>
+                    <h3>Carbonix AI Assistant</h3>
+                    <span class="online-indicator">Online</span>
+                </div>
+                <button id="chatbot-close" class="btn-icon"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div class="msg bot-msg">
+                    <div class="msg-bubble">Hello! I'm <strong>Carbonix AI</strong> — your personal sustainability engine. Ask me about carbon footprint, energy, travel, food habits, or emission reduction strategies!</div>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbot-input-field" placeholder="Ask about sustainability...">
+                <button id="chatbot-send" class="btn-icon text-primary"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/firebase.js"></script>
+    <script type="module" src="js/theme.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/calculator.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/chatbot.js"></script>
+</body>
+</html>
